@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="../twitter.php">
+    <input type="text" name="search-query">
+    <input type="submit" value="Search">
+</form>
+{% for tweet in response %}
+    <h3>{{ tweet.text }}</h3>
+    <p>{{ tweet.created_at}}</p>
+    <hr>
+{% endfor %}
+</body>
+</html>
