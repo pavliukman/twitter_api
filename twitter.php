@@ -1,24 +1,30 @@
 <?php
 require 'vendor/autoload.php';
-// loading template engine
+
+// loading template engine, set folder with views
 $loader = new Twig_Loader_Filesystem('view');
 $twig = new Twig_Environment($loader);
 
 // initializing pest, setting url of twitter api
-$pest = new Pest('https://api.twitter.com');
+$api = 'https://api.twitter.com';
+$pest = new Pest($api);
 
+// check if search query not empty
+$result = 'Field can not be empty';
 if (!empty($_GET['search-query'])) {
     $response = json_decode(getSearchResult($pest, $_GET['search-query']), true);
-    $tweets = jsonHandler($response);
-    echo $twig->render('index.html', array(
-        'response' => $tweets,
-    ));
+    $tweets = jsonToArray($response);
+    $result = $tweets;
 }
+echo $twig->render('index.html', array(
+    'response' => $result,
+    'type' => gettype($result)
+));
 
 /**
  * Converts json to array
  */
-function jsonHandler($response)
+function jsonToArray($response)
 {
     $tweets = array();
     foreach ($response as $tweet) {
@@ -39,6 +45,7 @@ function jsonHandler($response)
 
 /**
  * Get token returns auth token for twitter api
+ * @API_Key and @API_Secret taken from credentials.php file
  */
 function getToken($pest)
 {

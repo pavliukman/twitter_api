@@ -9,6 +9,9 @@
     <input type="text" name="search-query">
     <input type="submit" value="Search">
 </form>
+{% if type == 'string' %}
+    {{ response }}
+{% endif %}
 {% for tweet in response %}
     <h3>{{ tweet.text }}</h3>
     <p>{{ tweet.created_at}}</p>
